@@ -1,0 +1,16 @@
+{
+  "name": "avr8js-blink-test",
+  "type": "module",
+  "scripts": {
+    "start": "node ./out/index.js"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.1.0",
+    "typescript": "^5.5.4"
+  },
+  "dependencies": {
+    "avr8js": "^0.20.1",
+    "express": "^4.19.2"
+  }
+}
