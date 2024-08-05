@@ -2,7 +2,7 @@
   "name": "avr8js-blink-tester",
   "type": "module",
   "scripts": {
-    "start": "node ./out/index.js"
+    "start": "tsc && node ./out/index.js"
   },
   "devDependencies": {
     "@types/body-parser": "^1.19.5",
