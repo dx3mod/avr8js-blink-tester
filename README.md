@@ -1,24 +1,44 @@
 # avr8js-blink-tester
 
-A minimal server to simulate (with [avr8js]) and test LED blinking.
+Демонстрация возможности автоматизированной проверки практических работ студентов, проходящих курс по программированию микроконтроллеров AVR. 
 
-The LED should blink at 1000ms intervals.
+Такая система позволит автоматизировать тестирование программного кода в рамках симуляции, определяя корректность его работы путем сравнения с ожидаемым поведением.
 
-## Usage
+В репозитории представлен пример веб-сервиса, тестирующий симуляцию по миганию светодиодом на 7-мом пине с интервалом в 1000мс.
 
-Run the server.
-```console
-$ npm i # install dependencies
-$ npm run start 
+## Теоретическая часть
+
+Для симуляции микроконтроллеров AVR можно использовать решение от проекта [Wokwi] &mdash; симулятор МК AVR [avr8js], доступный в виде библиотеки. 
+
+Принцип использования симулятора:
+```
+Pre-Compiled machine code --> AVR8js <--> Glue code <--> external hardware functional simulation <--> simulation state display for the user
 ```
 
-Test a firmware (in Intel HEX format).
-```console
-$ curl -X POST -F "data=@code.hex" "http://localhost:8000/test/blink?ledPin=7"
-Ok.
+Стоит сказать, что из коробки есть поддержка только Arduino (ATmega328), но при желании есть возможность для адаптации и других контроллеров семейства. 
 
-$ curl -X POST -F "data=@code.hex" "http://localhost:8000/test/blink?ledPin=2"
-Fail: expected 2 blinks, but got 0
+## Использование 
+
+Для запуска сервиса вам потребуется [Node.js]:
+```console
+$ npm i # установка зависимостей
+$ npm run start # запуск на порту 8000
 ```
 
+Теперь, чтобы отправить прошивку (в формате Intel HEX) на проверку, можно воспользоваться каким-нибудь HTTP-клиентов, вроде [httpie].
+
+```console
+$ http --body post localhost:8000/test/blink @build/arduino.avr.uno/sketch_aug4a.ino.hex
+```
+
+После чего в случае успешного тестирования вернётся `Ok`, иначе `Fail` с сообщением о причинах.   
+
+Например, если мигание будет происходить с интервалом в 400мс:
+```
+Fail: delay != 1000ms
+```
+
+[Wokwi]: https://wokwi.com/
 [avr8js]: https://github.com/wokwi/avr8js
+[Node.js]: https://nodejs.org/en
+[httpie]: https://httpie.io/
